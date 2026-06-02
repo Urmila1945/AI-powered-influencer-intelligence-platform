@@ -22,8 +22,8 @@ def create_app():
     app.config['JWT_SECRET_KEY'] = config.JWT_SECRET_KEY
     jwt = JWTManager(app)
     
-    # Enable CORS
-    CORS(app)
+    # Enable CORS explicitly allowing all origins and headers
+    CORS(app, resources={r"/*": {"origins": "*", "allow_headers": "*"}})
 
     # Initialize MongoDB connection
     mongo.connect()
@@ -59,6 +59,8 @@ def create_app():
 
     return app
 
+# Instantiate app for Gunicorn
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
     app.run(host='0.0.0.0', port=5000, debug=config.DEBUG)
