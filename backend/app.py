@@ -10,6 +10,9 @@ from routes.score_routes import score_bp
 from routes.brand_routes import brand_bp
 from routes.analytics_routes import analytics_bp
 from routes.report_routes import report_bp
+from routes.auth_routes import auth_bp
+from routes.bonus_routes import bonus_bp
+from routes.config_routes import config_bp
 
 def create_app():
     app = Flask(__name__)
@@ -28,9 +31,12 @@ def create_app():
     # Register Blueprints
     app.register_blueprint(influencer_bp, url_prefix='/api/influencer')
     app.register_blueprint(score_bp, url_prefix='/api')
-    app.register_blueprint(brand_bp, url_prefix='/api')
-    app.register_blueprint(analytics_bp, url_prefix='/api')
+    app.register_blueprint(brand_bp, url_prefix='/api/brand')
+    app.register_blueprint(analytics_bp, url_prefix='/api/analytics')
     app.register_blueprint(report_bp, url_prefix='/api/report')
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')
+    app.register_blueprint(bonus_bp, url_prefix='/api/bonus')
+    app.register_blueprint(config_bp, url_prefix='/api/config')
 
     @app.route('/', methods=['GET'])
     def index():

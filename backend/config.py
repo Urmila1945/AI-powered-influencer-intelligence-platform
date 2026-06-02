@@ -18,8 +18,8 @@ class Config:
 
     # API Keys
     YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "")
-    APIFY_API_TOKEN = os.getenv("APIFY_API_TOKEN", "")
+    APIFY_API_TOKEN = os.getenv("APIFY_TOKEN", os.getenv("APIFY_API_TOKEN", ""))
     RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY", "")
-    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 
 config = Config()
