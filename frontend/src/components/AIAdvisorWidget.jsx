@@ -22,7 +22,8 @@ const AIAdvisorWidget = () => {
     setMessages(prev => [...prev, { role: 'ai', content: 'Processing your request...', isSystem: true }]);
     
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/analytics/advisor', {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000/api';
+      const response = await fetch(`${API_BASE_URL}/analytics/advisor`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
