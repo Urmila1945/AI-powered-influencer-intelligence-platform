@@ -31,6 +31,17 @@ def get_influencer_analysis(platform, username):
         current_user_email = get_jwt_identity()
         ActivityModel.log_activity(None, current_user_email, "SEARCH", f"Analyzed {platform} influencer: {username}")
         
+        # 1. Check cache first
+        cached_data = InfluencerModel.find_by_platform_and_username(platform, username)
+        if cached_data:
+            # We must pop out _id and mongo-specific fields so JSON serializes correctly
+            cached_data.pop('_id', None)
+            cached_data.pop('username_lower', None)
+            cached_data.pop('platform_lower', None)
+            cached_data.pop('updated_at', None)
+            return jsonify(cached_data), 200
+
+        # 2. Not in cache (or expired), so fetch fresh
         if platform == 'instagram':
             data = instagram_service.fetch_profile(username)
         elif platform == 'youtube':
@@ -41,10 +52,33 @@ def get_influencer_analysis(platform, username):
         if not data:
             return jsonify({"error": "User not found"}), 404
             
-        # Add deep intelligence
+        # 3. Add AI Insights in Parallel (halves the wait time)
         from services.llm_service import llm_service
-        deep_intel = llm_service.generate_deep_intelligence(str(data))
+        import concurrent.futures
+        
+        bio = data.get('bio', '')
+        category = data.get('category', 'General')
+        
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            future_demo = executor.submit(llm_service.generate_demographics_and_brands, bio, category, platform)
+            future_intel = executor.submit(llm_service.generate_deep_intelligence, str(data))
+            
+            ai_data = future_demo.result()
+            deep_intel = future_intel.result()
+            
+        data['brandMatches'] = ai_data.get("brandMatches", [])
+        data['scores']['brandMatchScore'] = data['brandMatches'][0]['score'] if data['brandMatches'] else 50
+        data['demographics'] = ai_data.get("demographics", {})
         data['deep_intelligence'] = deep_intel
+        
+        # 4. Save to cache
+        try:
+            InfluencerModel.create_influencer(data)
+        except Exception as e:
+            print(f"Failed to cache influencer: {e}")
+            
+        # Ensure _id isn't returned to frontend
+        data.pop('_id', None)
         
         return jsonify(data), 200
     except Exception as e:

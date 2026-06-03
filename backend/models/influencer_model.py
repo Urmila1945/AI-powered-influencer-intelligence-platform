@@ -8,27 +8,43 @@ class InfluencerModel:
 
     @staticmethod
     def create_influencer(data):
-        """
-        data dictionary should contain:
-        username, platform, followers, following, likes, comments,
-        engagement_rate, authenticity_score, growth_score, campaign_score, viralmind_score
-        """
-        influencer_doc = {
-            "_id": str(uuid.uuid4()),
-            "username": data.get("username", ""),
-            "platform": data.get("platform", ""),
-            "followers": data.get("followers", 0),
-            "following": data.get("following", 0),
-            "likes": data.get("likes", 0),
-            "comments": data.get("comments", 0),
-            "engagement_rate": data.get("engagement_rate", 0.0),
-            "authenticity_score": data.get("authenticity_score", 0),
-            "growth_score": data.get("growth_score", 0),
-            "campaign_score": data.get("campaign_score", 0),
-            "viralmind_score": data.get("viralmind_score", 0)
-        }
+        import uuid
+        from datetime import datetime, timezone
+        
+        # Clone the dict to avoid modifying the input
+        influencer_doc = dict(data)
+        influencer_doc["_id"] = str(uuid.uuid4())
+        influencer_doc["username_lower"] = data.get("username", "").lower().replace("@", "")
+        influencer_doc["platform_lower"] = data.get("platform", "").lower()
+        influencer_doc["updated_at"] = datetime.now(timezone.utc).isoformat()
+        
         InfluencerModel.get_collection().insert_one(influencer_doc)
         return influencer_doc
+        
+    @staticmethod
+    def find_by_platform_and_username(platform, username):
+        from datetime import datetime, timezone, timedelta
+        
+        # Strip @ from username and lowercase
+        clean_username = username.lower().replace("@", "")
+        clean_platform = platform.lower()
+        
+        doc = InfluencerModel.get_collection().find_one({
+            "platform_lower": clean_platform,
+            "username_lower": clean_username
+        })
+        
+        if doc:
+            # Check if it's older than 24 hours
+            updated_at = doc.get("updated_at")
+            if updated_at:
+                try:
+                    updated_time = datetime.fromisoformat(updated_at)
+                    if datetime.now(timezone.utc) - updated_time > timedelta(hours=24):
+                        return None # Cache expired
+                except:
+                    pass
+        return doc
 
     @staticmethod
     def update_scores(username, scores):

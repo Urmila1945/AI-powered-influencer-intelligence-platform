@@ -144,12 +144,6 @@ class ApifyInstagramService:
                 risk_level = "Low" if authenticity >= 80 else "Medium" if authenticity >= 60 else "High"
                 bio = profile.get("biography", "")
                 
-                # Fetch dynamic AI insights using the Groq API
-                ai_data = llm_service.generate_demographics_and_brands(bio, category, "Instagram")
-                brands = ai_data.get("brandMatches", [])
-                brand_match_score = brands[0]['score'] if brands else 50
-                demographics = ai_data.get("demographics", {})
-                
                 posting_frequency = f"{random.randint(3, 7)} posts/week" if posts > 100 else f"{random.randint(1, 4)} posts/month"
 
                 return {
@@ -173,11 +167,8 @@ class ApifyInstagramService:
                         "growth": growth,
                         "aqi": aqi,
                         "campaignSuccess": campaign,
-                        "brandMatchScore": brand_match_score,
                         "viralmind_score": overall_score
                     },
-                    "brandMatches": brands[:3],
-                    "demographics": demographics,
                     "riskLevel": risk_level
                 }
             # Return mock data as fallback if no real channel is found
