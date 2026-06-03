@@ -55,7 +55,12 @@ def create_app():
 
     @app.errorhandler(500)
     def internal_error(error):
-        return jsonify({'error': 'Internal server error'}), 500
+        import traceback
+        try:
+            tb = error.original_exception
+            return jsonify({'error': str(tb), 'traceback': traceback.format_exception(type(tb), tb, tb.__traceback__)}), 500
+        except:
+            return jsonify({'error': str(error)}), 500
 
     return app
 
