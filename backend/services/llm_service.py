@@ -197,4 +197,56 @@ class LLMService:
             print(f"Groq Advisor Error: {e}")
             return "I'm sorry, I encountered an error communicating with my AI brain. Please try again later."
 
+    def predict_campaign_roi(self, influencer_data, budget, industry):
+        if not self.api_key:
+            return {
+                "predicted_clicks": int(budget / 2),
+                "expected_sales": int(budget / 50),
+                "roi_percentage": 150,
+                "analysis": "This is mock data because the Groq API key is missing. Add GROQ_API_KEY to see real LLM-powered ROI predictions."
+            }
+
+        prompt = f"""
+        Act as an expert Influencer Marketing Analyst. 
+        A brand in the {industry} industry wants to spend ${budget} on a campaign with this creator:
+        {influencer_data}
+
+        Predict the campaign outcome. 
+        Respond ONLY with a valid JSON object matching this exact structure:
+        {{
+            "predicted_clicks": <int estimated clicks generated>,
+            "expected_sales": <int estimated conversions/sales>,
+            "roi_percentage": <int estimated ROI percentage, e.g. 150 for 150%>,
+            "analysis": "<String: A concise, 2-sentence explanation of why this campaign will perform this way based on their engagement and niche>"
+        }}
+        """
+        
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "model": "llama-3.1-8b-instant",
+            "messages": [
+                {"role": "user", "content": prompt}
+            ],
+            "temperature": 0.5,
+            "response_format": {"type": "json_object"}
+        }
+        
+        try:
+            response = requests.post(self.url, headers=headers, json=payload)
+            response.raise_for_status()
+            import json
+            return json.loads(response.json()['choices'][0]['message']['content'])
+        except Exception as e:
+            print(f"Groq ROI Predictor Error: {e}")
+            return {
+                "predicted_clicks": int(budget / 2),
+                "expected_sales": int(budget / 50),
+                "roi_percentage": 120,
+                "analysis": "Fallback analysis due to API error. The creator has solid engagement for their niche."
+            }
+
 llm_service = LLMService()

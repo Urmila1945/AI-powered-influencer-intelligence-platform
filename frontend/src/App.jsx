@@ -20,6 +20,7 @@ import {
   Settings 
 } from './pages/placeholders';
 import AIAdvisorWidget from './components/AIAdvisorWidget';
+import ROIPredictor from './pages/ROIPredictor';
 
 import BackgroundEffects from './components/BackgroundEffects';
 
@@ -43,6 +44,7 @@ function App() {
             <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
             <Route path="/ai-insights" element={<ProtectedRoute><AIInsights /></ProtectedRoute>} />
             <Route path="/predictor" element={<ProtectedRoute><FamePredictor /></ProtectedRoute>} />
+            <Route path="/roi-predictor" element={<ProtectedRoute><ROIPredictor /></ProtectedRoute>} />
             <Route path="/discover" element={<ProtectedRoute><Discovery /></ProtectedRoute>} />
             <Route path="/similar" element={<ProtectedRoute><SimilarCreators /></ProtectedRoute>} />
             <Route path="/generate-report" element={<ProtectedRoute><ReportGenerator /></ProtectedRoute>} />

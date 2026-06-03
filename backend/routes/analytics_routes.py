@@ -48,3 +48,50 @@ def advisor():
         
     response_text = llm_service.advisor_chat(formatted_messages)
     return jsonify({"response": response_text}), 200
+
+from utils.pricing_calculator import calculate_fair_market_price
+
+@analytics_bp.route('/roi-predictor', methods=['POST'])
+def roi_predictor():
+    data = request.get_json()
+    if not data or 'influencer_username' not in data or 'budget' not in data:
+        return jsonify({"error": "Missing required fields"}), 400
+        
+    username = data['influencer_username']
+    budget = float(data['budget'])
+    industry = data.get('industry', 'General')
+    
+    inf_data = InfluencerModel.find_by_username(username)
+    if not inf_data:
+        # Auto-fetch if not in DB
+        from services.instagram_service import instagram_service
+        from services.youtube_service import youtube_service
+        try:
+            inf_data = instagram_service.fetch_profile(username)
+        except:
+            try:
+                inf_data = youtube_service.fetch_channel(username)
+            except:
+                return jsonify({"error": "Influencer not found"}), 404
+    else:
+        inf_data.pop('_id', None)
+        
+    # 1. Calculate Fair Market Price
+    fair_price = calculate_fair_market_price(
+        inf_data.get('followers', 0), 
+        inf_data.get('engagementRate', 0),
+        inf_data.get('platform', 'Instagram'),
+        industry
+    )
+    
+    # 2. Get AI ROI Predictions
+    predictions = llm_service.predict_campaign_roi(str(inf_data), budget, industry)
+    
+    # Combine results
+    result = {
+        "fair_market_price": fair_price,
+        "predictions": predictions,
+        "influencer_data": inf_data
+    }
+    
+    return jsonify(result), 200

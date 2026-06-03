@@ -13,7 +13,7 @@ const Sidebar = ({ onHoverChange }) => {
     { name: 'Compare', path: '/compare', icon: Users },
     { name: 'Leaderboard', path: '/leaderboard', icon: Award },
     { name: 'AI Insights', path: '/ai-insights', icon: Brain },
-    { name: 'Fame Predictor', path: '/predictor', icon: TrendingUp },
+    { name: 'ROI Predictor', path: '/roi-predictor', icon: TrendingUp },
     { name: 'Similar Creators', path: '/similar', icon: Copy },
     { name: 'Report Generator', path: '/generate-report', icon: Download },
   ];
