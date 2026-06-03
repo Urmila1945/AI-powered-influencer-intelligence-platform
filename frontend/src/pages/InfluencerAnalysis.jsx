@@ -196,7 +196,7 @@ const InfluencerAnalysis = () => {
             <div className="glass-card flex items-center justify-between">
               <div>
                 <h3 className="text-xl font-bold mb-1 flex items-center gap-2">
-                  Ratefluencer Score™
+                  ViralMind Score™
                   <CheckCircle size={18} className="text-success" />
                 </h3>
                 <p className="text-gray-400 text-sm">Overall AI confidence score based on 50+ metrics.</p>
@@ -207,14 +207,14 @@ const InfluencerAnalysis = () => {
                   <circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-white/10" />
                   <motion.circle 
                     initial={{ strokeDasharray: "0, 1000" }}
-                    animate={{ strokeDasharray: `${(result.scores.ratefluencer_score / 100) * 251.2}, 1000` }}
+                    animate={{ strokeDasharray: `${(result.scores.viralmind_score / 100) * 251.2}, 1000` }}
                     transition={{ duration: 1.5, ease: "easeOut" }}
                     cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="8" fill="transparent"
                     strokeLinecap="round"
                     className="text-primary"
                   />
                 </svg>
-                <span className="absolute text-2xl font-bold">{result.scores.ratefluencer_score}</span>
+                <span className="absolute text-2xl font-bold">{result.scores.viralmind_score}</span>
               </div>
             </div>
 

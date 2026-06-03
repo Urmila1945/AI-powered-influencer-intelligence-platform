@@ -141,7 +141,7 @@ const Dashboard = () => {
                   <td className="py-4">{item.followers >= 1000000 ? (item.followers/1000000).toFixed(1) + 'M' : (item.followers/1000).toFixed(1) + 'K'}</td>
                   <td className="py-4">
                     <span className="px-2 py-1 bg-success/20 text-success rounded-md text-xs font-medium border border-success/30">
-                      {item.ratefluencer_score}
+                      {item.viralmind_score}
                     </span>
                   </td>
                   <td className="py-4 text-success">+{item.growth_score}%</td>

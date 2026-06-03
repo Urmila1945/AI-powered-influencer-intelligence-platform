@@ -14,7 +14,7 @@ const LandingPage = () => {
   const steps = [
     { step: '01', title: 'Enter Creator', desc: 'Simply input any Instagram or YouTube handle.' },
     { step: '02', title: 'AI Analysis', desc: 'Our engine processes millions of data points.' },
-    { step: '03', title: 'Get Ratefluencer Score', desc: 'Receive a comprehensive, actionable intelligence report.' }
+    { step: '03', title: 'Get ViralMind Score', desc: 'Receive a comprehensive, actionable intelligence report.' }
   ];
 
   return (
@@ -26,7 +26,7 @@ const LandingPage = () => {
       {/* Navbar */}
       <nav className="w-full px-8 py-6 flex justify-between items-center z-10 relative">
         <div className="text-2xl font-bold tracking-tighter">
-          <span className="text-gradient">RATEFLUENCER</span> AI
+          <span className="text-gradient">VIRALMIND</span> AI
         </div>
         <div className="space-x-6 hidden md:flex text-sm font-medium text-gray-300">
           <a href="#features" className="hover:text-white transition-colors">Features</a>
@@ -141,7 +141,7 @@ const LandingPage = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { name: "Sarah J.", role: "CMO at TechBrand", quote: "RATEFLUENCER AI saved us over $50k in ad spend by identifying fake engagement rings before we signed the contract." },
+              { name: "Sarah J.", role: "CMO at TechBrand", quote: "VIRALMIND AI saved us over $50k in ad spend by identifying fake engagement rings before we signed the contract." },
               { name: "Michael T.", role: "Agency Director", quote: "The Growth Prediction algorithm is uncanny. It predicted our latest ambassador's viral breakout 3 weeks in advance." },
               { name: "Elena R.", role: "Brand Strategist", quote: "Finally, an intelligence platform that looks as good as it functions. The UI is absolutely breathtaking and the AI is unmatched." }
             ].map((t, i) => (
@@ -171,8 +171,8 @@ const LandingPage = () => {
       <footer className="border-t border-white/10 py-12 relative z-10 bg-background/50 backdrop-blur-lg">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
-            <span className="text-xl font-bold tracking-tighter text-gradient">RATEFLUENCER AI</span>
-            <p className="text-sm text-gray-500 mt-2">© 2026 Ratefluencer Inc. All rights reserved.</p>
+            <span className="text-xl font-bold tracking-tighter text-gradient">VIRALMIND AI</span>
+            <p className="text-sm text-gray-500 mt-2">© 2026 ViralMind Inc. All rights reserved.</p>
           </div>
           <div className="flex space-x-6 text-sm text-gray-400">
             <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>

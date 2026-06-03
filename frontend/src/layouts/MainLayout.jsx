@@ -30,7 +30,7 @@ const Sidebar = ({ onHoverChange }) => {
         </div>
         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <Link to="/" className="text-xl font-bold tracking-tighter">
-            <span className="text-gradient">RATEFLUENCER</span> AI
+            <span className="text-gradient">VIRALMIND</span> AI
           </Link>
           <p className="text-[10px] text-gray-400 mt-1 font-medium truncate">Predict Influence Before It Happens</p>
         </div>

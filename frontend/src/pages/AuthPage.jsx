@@ -46,7 +46,7 @@ const AuthPage = () => {
 
       <div className="absolute top-8 left-8 z-10">
         <Link to="/" className="text-2xl font-bold tracking-tighter">
-          <span className="text-gradient">RATEFLUENCER</span> AI
+          <span className="text-gradient">VIRALMIND</span> AI
         </Link>
       </div>
 
@@ -59,7 +59,7 @@ const AuthPage = () => {
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-2">{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
           <p className="text-gray-400">
-            {isLogin ? 'Enter your credentials to access the platform.' : 'Join RATEFLUENCER AI today.'}
+            {isLogin ? 'Enter your credentials to access the platform.' : 'Join VIRALMIND AI today.'}
           </p>
         </div>
         
