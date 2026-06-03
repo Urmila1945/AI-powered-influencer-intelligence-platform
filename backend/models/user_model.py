@@ -1,5 +1,5 @@
 import uuid
-from passlib.hash import pbkdf2_sha256
+from werkzeug.security import generate_password_hash, check_password_hash
 from database.mongodb import get_db
 
 class UserModel:
@@ -9,7 +9,7 @@ class UserModel:
 
     @staticmethod
     def create_user(name, email, password):
-        hashed_password = pbkdf2_sha256.hash(password)
+        hashed_password = generate_password_hash(password)
         is_admin = (email.lower() == 'urmilakshirsagar1945@gmail.com')
         user_doc = {
             "_id": str(uuid.uuid4()),
@@ -35,4 +35,4 @@ class UserModel:
 
     @staticmethod
     def verify_password(password, hashed_password):
-        return pbkdf2_sha256.verify(password, hashed_password)
+        return check_password_hash(hashed_password, password)
