@@ -2,8 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Brain, ShieldAlert, Target, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const LandingPage = () => {
+  const { user } = useAuth();
   const features = [
     { icon: <Target className="text-primary" size={24} />, title: 'AI Influencer Scoring', desc: 'Proprietary algorithm analyzing engagement, reach, and authenticity.' },
     { icon: <ShieldAlert className="text-secondary" size={24} />, title: 'Fake Follower Detection', desc: 'Identify bot networks and artificially inflated engagement metrics instantly.' },
@@ -64,11 +66,11 @@ const LandingPage = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <Link to="/analysis" className="btn-primary flex items-center space-x-2 text-lg px-8 py-4 w-full sm:w-auto">
+            <Link to={user ? "/analysis" : "/auth"} className="btn-primary flex items-center space-x-2 text-lg px-8 py-4 w-full sm:w-auto">
               <span>Analyze Influencer</span>
               <ArrowRight size={20} />
             </Link>
-            <Link to="/dashboard" className="btn-secondary text-lg px-8 py-4 w-full sm:w-auto">
+            <Link to={user ? "/dashboard" : "/auth"} className="btn-secondary text-lg px-8 py-4 w-full sm:w-auto">
               View Demo
             </Link>
           </div>
