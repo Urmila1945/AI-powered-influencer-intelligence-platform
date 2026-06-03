@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, BarChart2, Users, Target, Award, Brain, TrendingUp, Search, Copy, Download, Settings as SettingsIcon } from 'lucide-react';
+import { Home, BarChart2, Users, Target, Award, Brain, TrendingUp, Search, Copy, Download, Settings as SettingsIcon, ShieldAlert } from 'lucide-react';
 
 const Sidebar = ({ onHoverChange }) => {
   const location = useLocation();
@@ -14,7 +14,7 @@ const Sidebar = ({ onHoverChange }) => {
     { name: 'Leaderboard', path: '/leaderboard', icon: Award },
     { name: 'AI Insights', path: '/ai-insights', icon: Brain },
     { name: 'ROI Predictor', path: '/roi-predictor', icon: TrendingUp },
-    { name: 'Similar Creators', path: '/similar', icon: Copy },
+    { name: 'Audience Analysis', path: '/audience-sentiment', icon: ShieldAlert },
     { name: 'Report Generator', path: '/generate-report', icon: Download },
   ];
 

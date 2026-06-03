@@ -95,3 +95,36 @@ def roi_predictor():
     }
     
     return jsonify(result), 200
+
+@analytics_bp.route('/audience-sentiment', methods=['POST'])
+def audience_sentiment():
+    data = request.get_json()
+    if not data or 'influencer_username' not in data:
+        return jsonify({"error": "Missing influencer_username"}), 400
+        
+    username = data['influencer_username']
+    
+    inf_data = InfluencerModel.find_by_username(username)
+    if not inf_data:
+        # Auto-fetch if not in DB
+        from services.instagram_service import instagram_service
+        from services.youtube_service import youtube_service
+        try:
+            inf_data = instagram_service.fetch_profile(username)
+        except:
+            try:
+                inf_data = youtube_service.fetch_channel(username)
+            except:
+                return jsonify({"error": "Influencer not found"}), 404
+    else:
+        inf_data.pop('_id', None)
+        
+    # Get AI Sentiment Analysis
+    analysis = llm_service.analyze_audience_sentiment(str(inf_data))
+    
+    result = {
+        "analysis": analysis,
+        "influencer_data": inf_data
+    }
+    
+    return jsonify(result), 200

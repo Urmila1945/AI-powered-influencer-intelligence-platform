@@ -249,4 +249,64 @@ class LLMService:
                 "analysis": "Fallback analysis due to API error. The creator has solid engagement for their niche."
             }
 
+    def analyze_audience_sentiment(self, influencer_data):
+        if not self.api_key:
+            return {
+                "positive": 65,
+                "neutral": 25,
+                "negative": 10,
+                "bot_risk_score": 15,
+                "bot_risk_label": "Low Risk",
+                "top_topics": ["Highly engaged community", "Authentic praise", "Occasional spam links"],
+                "analysis": "This is mock data because the Groq API key is missing. Add GROQ_API_KEY to see real NLP audience analysis."
+            }
+
+        prompt = f"""
+        Act as an expert AI Bot Detector and Sentiment Analyst.
+        Analyze this creator's profile and engagement metrics to deduce their audience authenticity and sentiment:
+        {influencer_data}
+
+        Respond ONLY with a valid JSON object matching this exact structure:
+        {{
+            "positive": <int percentage 0-100>,
+            "neutral": <int percentage 0-100>,
+            "negative": <int percentage 0-100>,
+            "bot_risk_score": <int 0-100 where higher means more bots>,
+            "bot_risk_label": "<String: Low Risk, Medium Risk, or High Risk>",
+            "top_topics": ["<Topic 1>", "<Topic 2>", "<Topic 3>"],
+            "analysis": "<String: A concise 2-sentence explanation of the audience quality and any red flags>"
+        }}
+        """
+        
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "model": "llama-3.1-8b-instant",
+            "messages": [
+                {"role": "user", "content": prompt}
+            ],
+            "temperature": 0.5,
+            "response_format": {"type": "json_object"}
+        }
+        
+        try:
+            response = requests.post(self.url, headers=headers, json=payload)
+            response.raise_for_status()
+            import json
+            return json.loads(response.json()['choices'][0]['message']['content'])
+        except Exception as e:
+            print(f"Groq Sentiment Error: {e}")
+            return {
+                "positive": 60,
+                "neutral": 30,
+                "negative": 10,
+                "bot_risk_score": 20,
+                "bot_risk_label": "Medium Risk",
+                "top_topics": ["General appreciation", "Questions about content", "Some repetitive emojis"],
+                "analysis": "Fallback analysis due to API error. The audience appears mostly genuine with standard bot activity."
+            }
+
 llm_service = LLMService()
