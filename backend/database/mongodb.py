@@ -1,4 +1,4 @@
-import mongomock
+from pymongo import MongoClient
 from config import config
 
 class MongoDB:
@@ -11,10 +11,15 @@ class MongoDB:
             return
 
         try:
-            # We use an in-memory mock database so no external cluster is needed!
-            self.client = mongomock.MongoClient()
+            print(f"Attempting to connect to MongoDB URI: {config.MONGODB_URI}")
+            self.client = MongoClient(
+                config.MONGODB_URI,
+                serverSelectionTimeoutMS=5000
+            )
+            # Force a connection test
+            self.client.admin.command('ping')
             self.db = self.client[config.MONGODB_DB_NAME]
-            print(f"Connected to In-Memory MongoDB: {config.MONGODB_DB_NAME}")
+            print(f"Connected to Real MongoDB: {config.MONGODB_DB_NAME}")
 
         except Exception as e:
             print(f"Failed to connect to MongoDB: {e}")
