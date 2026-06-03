@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Hardcoded for the hackathon deployment to prevent any environment variable issues
-const API_BASE_URL = 'https://viralmind-backend-1.onrender.com/api';
+const API_BASE_URL = 'https://ratefluencer-backend-1.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
