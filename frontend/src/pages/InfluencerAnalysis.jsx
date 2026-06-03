@@ -335,8 +335,6 @@ const InfluencerAnalysis = () => {
               </div>
             )}
 
-            </div>
-
             {/* Deep Intelligence Rendering */}
             {result.deep_intelligence && (
               <>
