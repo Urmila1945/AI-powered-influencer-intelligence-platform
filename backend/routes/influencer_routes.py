@@ -13,6 +13,12 @@ def get_youtube_influencer(channel_id):
         data = youtube_service.fetch_channel(channel_id)
         if not data:
             return jsonify({"error": "Channel not found"}), 404
+        
+        # Add deep intelligence
+        from services.llm_service import llm_service
+        deep_intel = llm_service.generate_deep_intelligence(str(data))
+        data['deep_intelligence'] = deep_intel
+        
         return jsonify(data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
@@ -24,6 +30,12 @@ def get_instagram_influencer(username):
         data = instagram_service.fetch_profile(username)
         if not data:
             return jsonify({"error": "User not found"}), 404
+            
+        # Add deep intelligence
+        from services.llm_service import llm_service
+        deep_intel = llm_service.generate_deep_intelligence(str(data))
+        data['deep_intelligence'] = deep_intel
+        
         return jsonify(data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 400
@@ -110,6 +122,37 @@ def get_leaderboard():
             filtered_influencers.append(inf)
     
     return jsonify(filtered_influencers[:10]), 200
+
+@influencer_bp.route('/stock-market', methods=['GET'])
+def get_stock_market():
+    # Reuse the leaderboard logic but add stock ratings
+    from services.llm_service import llm_service
+    all_influencers = InfluencerModel.get_all()
+    if not all_influencers:
+        seed_creators = ["mkbhd", "mrwhosetheboss", "techburner", "supercarblondie"]
+        for c in seed_creators:
+            InfluencerModel.create_influencer({"username": c, "platform": "YouTube"})
+        all_influencers = InfluencerModel.get_all()
+
+    stock_data = []
+    for inf in all_influencers[:10]:
+        # Fast fallback intelligence for stocks to prevent slow loading
+        intel = llm_service._get_fallback_deep_intelligence()
+        # Randomize slightly for the demo
+        import random
+        momentum = random.randint(-15, 25)
+        stock_data.append({
+            "username": inf.get("username", "Unknown"),
+            "platform": inf.get("platform", "YouTube"),
+            "price": inf.get("followers", 0) / 1000,
+            "momentum": momentum,
+            "recommendation": "Buy" if momentum > 5 else ("Hold" if momentum > -5 else "Avoid"),
+            "viralmind_score": inf.get("viralmind_score", random.randint(70, 99))
+        })
+    
+    stock_data.sort(key=lambda x: x['momentum'], reverse=True)
+    return jsonify(stock_data), 200
+
 
 # API 11
 @influencer_bp.route('/compare', methods=['POST'])

@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, BarChart2, Users, Target, Award, Brain, TrendingUp, Search, Copy, Download, Settings as SettingsIcon, ShieldAlert } from 'lucide-react';
+import { Home, BarChart2, Users, Target, Award, Brain, TrendingUp, Search, Copy, Download, Settings as SettingsIcon, ShieldAlert, Activity, Network } from 'lucide-react';
 
 const Sidebar = ({ onHoverChange }) => {
   const location = useLocation();
   
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: Home },
+    { name: 'Stock Market', path: '/stock-market', icon: Activity },
     { name: 'Discovery Engine', path: '/discover', icon: Search },
     { name: 'Influencer Analysis', path: '/analysis', icon: BarChart2 },
+    { name: 'Network Graph', path: '/network-graph', icon: Network },
     { name: 'Brand Matching', path: '/brand-match', icon: Target },
     { name: 'Compare', path: '/compare', icon: Users },
     { name: 'Leaderboard', path: '/leaderboard', icon: Award },
     { name: 'AI Insights', path: '/ai-insights', icon: Brain },
-    { name: 'ROI Predictor', path: '/roi-predictor', icon: TrendingUp },
+    { name: 'Campaign Simulator', path: '/roi-predictor', icon: TrendingUp },
     { name: 'Audience Analysis', path: '/audience-sentiment', icon: ShieldAlert },
     { name: 'Report Generator', path: '/generate-report', icon: Download },
   ];

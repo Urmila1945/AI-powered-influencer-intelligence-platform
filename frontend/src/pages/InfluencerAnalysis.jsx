@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ShieldAlert, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Search, ShieldAlert, CheckCircle, AlertTriangle, Users, Award, TrendingUp } from 'lucide-react';
 import { FaYoutube as Youtube, FaInstagram as Instagram } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
@@ -15,7 +15,7 @@ const ScoreCard = ({ title, score, max = 100, color }) => {
       <div className="w-full bg-white/10 rounded-full h-2">
         <motion.div 
           initial={{ width: 0 }}
-          animate={{ width: `${percentage}%` }}
+          animate={{ width: `${Math.min(100, Math.max(0, percentage))}%` }}
           transition={{ duration: 1, ease: "easeOut" }}
           className={`h-2 rounded-full ${color.replace('text-', 'bg-')}`}
         ></motion.div>
@@ -23,6 +23,22 @@ const ScoreCard = ({ title, score, max = 100, color }) => {
     </div>
   );
 };
+
+const RadarItem = ({ label, score }) => (
+    <div className="space-y-1">
+        <div className="flex justify-between text-xs text-gray-400">
+            <span>{label}</span>
+            <span className={score > 50 ? 'text-danger font-bold' : (score > 20 ? 'text-warning font-bold' : 'text-success font-bold')}>{score}/100</span>
+        </div>
+        <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+            <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: `${score}%` }}
+                className={`h-full ${score > 50 ? 'bg-danger' : (score > 20 ? 'bg-warning' : 'bg-success')}`}
+            />
+        </div>
+    </div>
+);
 
 import api from '../services/api';
 
@@ -319,20 +335,126 @@ const InfluencerAnalysis = () => {
               </div>
             )}
 
-            {/* Brand Recommendations */}
-            {result.brandMatches && (
-              <div className="glass-card p-4">
-                <h4 className="font-bold mb-3">AI Brand Recommendations</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  {result.brandMatches.map((brand, idx) => (
-                    <div key={idx} className="bg-black/20 p-3 rounded-lg border border-white/5 flex flex-col items-center text-center">
-                      <span className="font-bold text-primary">{brand.brand}</span>
-                      <span className="text-xs text-gray-400 mt-1">Match: {brand.score}%</span>
+            </div>
+
+            {/* Deep Intelligence Rendering */}
+            {result.deep_intelligence && (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Stock Rating */}
+                  <div className="glass-card p-4 border border-primary/30 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-10"><TrendingUp size={64}/></div>
+                    <h4 className="font-bold text-gray-300 text-sm uppercase tracking-wider mb-2">Stock Rating</h4>
+                    <div className="flex items-end gap-3 mb-2">
+                        <span className={`text-4xl font-black ${
+                            result.deep_intelligence.stock_rating.recommendation === 'Buy' ? 'text-success' : 
+                            result.deep_intelligence.stock_rating.recommendation === 'Hold' ? 'text-warning' : 'text-danger'
+                        }`}>
+                            {result.deep_intelligence.stock_rating.recommendation.toUpperCase()}
+                        </span>
+                        <span className={`text-lg font-bold pb-1 ${result.deep_intelligence.stock_rating.momentum > 0 ? 'text-success' : 'text-danger'}`}>
+                            {result.deep_intelligence.stock_rating.momentum > 0 ? '+' : ''}{result.deep_intelligence.stock_rating.momentum}%
+                        </span>
                     </div>
-                  ))}
+                    <p className="text-xs text-gray-400">{result.deep_intelligence.stock_rating.reasoning}</p>
+                  </div>
+
+                  {/* Future Superstar */}
+                  <div className="glass-card p-4 border border-secondary/30 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-10"><Award size={64}/></div>
+                    <h4 className="font-bold text-gray-300 text-sm uppercase tracking-wider mb-2">Superstar Probability</h4>
+                    <div className="text-4xl font-black text-secondary mb-2">
+                        {result.deep_intelligence.superstar_probability}%
+                    </div>
+                    <div className="w-full bg-white/10 rounded-full h-2">
+                        <div style={{ width: `${result.deep_intelligence.superstar_probability}%` }} className="bg-secondary h-full rounded-full"></div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Creator DNA */}
+                  <div className="glass-card p-4">
+                    <h4 className="font-bold text-gray-300 text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <Users size={16} className="text-primary" /> Creator DNA Profile
+                    </h4>
+                    <div className="space-y-3">
+                        <div>
+                            <span className="text-xs text-gray-500 block">Personality</span>
+                            <span className="font-semibold text-white">{result.deep_intelligence.creator_dna.personality}</span>
+                        </div>
+                        <div>
+                            <span className="text-xs text-gray-500 block">Audience Type</span>
+                            <span className="font-semibold text-white">{result.deep_intelligence.creator_dna.audience_type}</span>
+                        </div>
+                        <div>
+                            <span className="text-xs text-gray-500 block">Communication Style</span>
+                            <span className="font-semibold text-white">{result.deep_intelligence.creator_dna.communication_style}</span>
+                        </div>
+                    </div>
+                  </div>
+
+                  {/* Risk Radar */}
+                  <div className="glass-card p-4">
+                    <h4 className="font-bold text-gray-300 text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <ShieldAlert size={16} className="text-danger" /> Influencer Risk Radar
+                    </h4>
+                    <div className="space-y-3">
+                        <RadarItem label="Fake Followers" score={result.deep_intelligence.risk_radar.fake_followers} />
+                        <RadarItem label="Toxic Comments" score={result.deep_intelligence.risk_radar.toxic_comments} />
+                        <RadarItem label="Controversy Risk" score={result.deep_intelligence.risk_radar.controversy_risk} />
+                        <RadarItem label="Inactive Audience" score={result.deep_intelligence.risk_radar.inactive_audience} />
+                        <RadarItem label="Engagement Pods" score={result.deep_intelligence.risk_radar.engagement_pods} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Compatibility Heatmap */}
+                <div className="glass-card p-4">
+                  <h4 className="font-bold text-gray-300 text-sm uppercase tracking-wider mb-4">Brand Compatibility Heatmap</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {result.deep_intelligence.compatibility_heatmap.map((brand, idx) => (
+                      <div key={idx} className={`p-3 rounded-lg border ${
+                          brand.match_status === '🔥' ? 'bg-success/10 border-success/30' :
+                          brand.match_status === '✅' ? 'bg-primary/10 border-primary/30' :
+                          'bg-danger/10 border-danger/30'
+                      } flex flex-col items-center text-center`}>
+                        <span className="font-bold text-white">{brand.brand}</span>
+                        <span className="text-lg mt-1">{brand.match_status}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Content Gaps & Burnout */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="glass-card p-4 border-l-4 border-l-warning">
+                    <h4 className="font-bold text-warning text-sm uppercase tracking-wider mb-2">Content Gap identified</h4>
+                    <p className="text-sm font-medium mb-1">Opportunity Score: {result.deep_intelligence.content_gaps.opportunity_score}/100</p>
+                    <p className="text-gray-400 text-xs">{result.deep_intelligence.content_gaps.gap}</p>
+                  </div>
+                  <div className={`glass-card p-4 border-l-4 ${
+                      result.deep_intelligence.burnout_risk.level === 'Low' ? 'border-l-success' :
+                      result.deep_intelligence.burnout_risk.level === 'Medium' ? 'border-l-warning' : 'border-l-danger'
+                  }`}>
+                    <h4 className={`font-bold text-sm uppercase tracking-wider mb-2 ${
+                        result.deep_intelligence.burnout_risk.level === 'Low' ? 'text-success' :
+                        result.deep_intelligence.burnout_risk.level === 'Medium' ? 'text-warning' : 'text-danger'
+                    }`}>Burnout Risk: {result.deep_intelligence.burnout_risk.level}</h4>
+                    <p className="text-gray-400 text-xs">{result.deep_intelligence.burnout_risk.reasoning}</p>
+                  </div>
+                </div>
+                
+                {/* AI Clone Summary */}
+                <div className="glass-card p-6 bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20">
+                    <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-2">AI Summary</h4>
+                    <p className="text-sm text-gray-300 leading-relaxed italic border-l-2 border-primary pl-4">
+                        "{result.deep_intelligence.ai_clone_summary}"
+                    </p>
+                </div>
+              </>
             )}
+
           </div>
         </motion.div>
       )}

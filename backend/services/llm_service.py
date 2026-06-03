@@ -214,6 +214,9 @@ class LLMService:
         Predict the campaign outcome. 
         Respond ONLY with a valid JSON object matching this exact structure:
         {{
+            "predicted_reach": <int estimated reach>,
+            "predicted_likes": <int estimated likes>,
+            "predicted_comments": <int estimated comments>,
             "predicted_clicks": <int estimated clicks generated>,
             "expected_sales": <int estimated conversions/sales>,
             "roi_percentage": <int estimated ROI percentage, e.g. 150 for 150%>,
@@ -243,6 +246,9 @@ class LLMService:
         except Exception as e:
             print(f"Groq ROI Predictor Error: {e}")
             return {
+                "predicted_reach": int(budget * 5),
+                "predicted_likes": int(budget / 10),
+                "predicted_comments": int(budget / 50),
                 "predicted_clicks": int(budget / 2),
                 "expected_sales": int(budget / 50),
                 "roi_percentage": 120,
@@ -308,5 +314,102 @@ class LLMService:
                 "top_topics": ["General appreciation", "Questions about content", "Some repetitive emojis"],
                 "analysis": "Fallback analysis due to API error. The audience appears mostly genuine with standard bot activity."
             }
+
+    def generate_deep_intelligence(self, influencer_data):
+        if not self.api_key:
+            return self._get_fallback_deep_intelligence()
+
+        prompt = f"""
+        Act as an ultra-advanced AI Influencer Intelligence Engine. 
+        You are analyzing this creator's profile data:
+        {influencer_data}
+
+        Generate a futuristic, highly detailed intelligence report covering 15 advanced metrics.
+        Respond ONLY with a valid JSON object matching this exact structure:
+        {{
+            "stock_rating": {{"recommendation": "<Buy/Hold/Avoid>", "momentum": <int -100 to 100>, "reasoning": "<1 sentence>"}},
+            "superstar_probability": <int 0-100>,
+            "risk_radar": {{
+                "fake_followers": <int 0-100>,
+                "toxic_comments": <int 0-100>,
+                "controversy_risk": <int 0-100>,
+                "inactive_audience": <int 0-100>,
+                "engagement_pods": <int 0-100>,
+                "overall_score": <int 0-100, 100 is max risk>
+            }},
+            "creator_dna": {{
+                "personality": "<String: e.g. Tech Educator>",
+                "audience_type": "<String: e.g. Early Adopters>",
+                "communication_style": "<String: e.g. Informative>"
+            }},
+            "burnout_risk": {{"level": "<Low/Medium/High>", "reasoning": "<1 sentence>"}},
+            "brand_safety_score": <int 0-100, 100 is safest>,
+            "content_gaps": {{"opportunity_score": <int 0-100>, "gap": "<String: what they should post more>"}},
+            "career_forecast": {{"6_months": "<String: e.g. 750K>", "12_months": "<String: e.g. 1.1M>"}},
+            "compatibility_heatmap": [
+                {{"brand": "<Top Brand 1>", "match_status": "🔥"}},
+                {{"brand": "<Top Brand 2>", "match_status": "✅"}},
+                {{"brand": "<Incompatible Brand>", "match_status": "⚠️"}}
+            ],
+            "aqi": <int 0-100, Audience Quality Index>,
+            "negotiation_assistant": {{"suggested_price": "<String: e.g. ₹75,000 per reel>", "reasoning": "<1 sentence>"}},
+            "ai_clone_summary": "<String: 2 sentences explaining why they are successful>"
+        }}
+        """
+        
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "model": "llama-3.1-8b-instant",
+            "messages": [
+                {"role": "user", "content": prompt}
+            ],
+            "temperature": 0.5,
+            "response_format": {"type": "json_object"}
+        }
+        
+        try:
+            response = requests.post(self.url, headers=headers, json=payload)
+            response.raise_for_status()
+            import json
+            return json.loads(response.json()['choices'][0]['message']['content'])
+        except Exception as e:
+            print(f"Groq Deep Intelligence Error: {e}")
+            return self._get_fallback_deep_intelligence()
+
+    def _get_fallback_deep_intelligence(self):
+        return {
+            "stock_rating": {"recommendation": "Buy", "momentum": 12, "reasoning": "Strong consistent growth."},
+            "superstar_probability": 85,
+            "risk_radar": {
+                "fake_followers": 15,
+                "toxic_comments": 10,
+                "controversy_risk": 20,
+                "inactive_audience": 30,
+                "engagement_pods": 5,
+                "overall_score": 16
+            },
+            "creator_dna": {
+                "personality": "Educator",
+                "audience_type": "Enthusiasts",
+                "communication_style": "Informative"
+            },
+            "burnout_risk": {"level": "Low", "reasoning": "Consistent posting schedule with high engagement."},
+            "brand_safety_score": 92,
+            "content_gaps": {"opportunity_score": 88, "gap": "Behind the scenes content"},
+            "career_forecast": {"6_months": "+10%", "12_months": "+25%"},
+            "compatibility_heatmap": [
+                {"brand": "Samsung", "match_status": "🔥"},
+                {"brand": "Nike", "match_status": "✅"},
+                {"brand": "Luxury Brand", "match_status": "⚠️"}
+            ],
+            "aqi": 94,
+            "negotiation_assistant": {"suggested_price": "$1,000 per post", "reasoning": "High engagement rate justifies premium pricing."},
+            "ai_clone_summary": "Highly successful due to authentic communication and consistent value delivery to a niche audience."
+        }
+
 
 llm_service = LLMService()

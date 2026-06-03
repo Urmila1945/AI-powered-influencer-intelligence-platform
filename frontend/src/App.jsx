@@ -22,6 +22,8 @@ import {
 import AIAdvisorWidget from './components/AIAdvisorWidget';
 import ROIPredictor from './pages/ROIPredictor';
 import AudienceSentiment from './pages/AudienceSentiment';
+import StockMarket from './pages/StockMarket';
+import SimilarityGraph from './pages/SimilarityGraph';
 
 import BackgroundEffects from './components/BackgroundEffects';
 
@@ -47,6 +49,8 @@ function App() {
             <Route path="/predictor" element={<ProtectedRoute><FamePredictor /></ProtectedRoute>} />
             <Route path="/roi-predictor" element={<ProtectedRoute><ROIPredictor /></ProtectedRoute>} />
             <Route path="/audience-sentiment" element={<ProtectedRoute><AudienceSentiment /></ProtectedRoute>} />
+            <Route path="/stock-market" element={<ProtectedRoute><StockMarket /></ProtectedRoute>} />
+            <Route path="/network-graph" element={<ProtectedRoute><SimilarityGraph /></ProtectedRoute>} />
             <Route path="/discover" element={<ProtectedRoute><Discovery /></ProtectedRoute>} />
             <Route path="/similar" element={<ProtectedRoute><SimilarCreators /></ProtectedRoute>} />
             <Route path="/generate-report" element={<ProtectedRoute><ReportGenerator /></ProtectedRoute>} />
