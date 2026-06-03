@@ -7,6 +7,8 @@ const SimilarityGraph = () => {
   const [query, setQuery] = useState('TechBurner');
   const [data, setData] = useState({ nodes: [], links: [] });
   const [loading, setLoading] = useState(false);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const containerRef = useRef(null);
   const fgRef = useRef();
 
   const generateMockGraph = (centerNode) => {
@@ -47,6 +49,20 @@ const SimilarityGraph = () => {
     setData(generateMockGraph(query));
   }, []);
 
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setDimensions({
+          width: entry.contentRect.width,
+          height: entry.contentRect.height
+        });
+      }
+    });
+    resizeObserver.observe(containerRef.current);
+    return () => resizeObserver.disconnect();
+  }, []);
+
   return (
     <div className="max-w-7xl mx-auto space-y-8 h-full flex flex-col">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
@@ -75,21 +91,23 @@ const SimilarityGraph = () => {
       </div>
 
       <motion.div 
+        ref={containerRef}
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="glass-card flex-1 min-h-[600px] overflow-hidden relative border border-white/10 rounded-2xl"
+        className="glass-card flex-1 min-h-[600px] overflow-hidden relative border border-white/10 rounded-2xl flex"
       >
-        <ForceGraph2D
-          ref={fgRef}
-          graphData={data}
-          nodeLabel="id"
-          nodeColor={node => node.group === 1 ? '#8B5CF6' : '#3B82F6'}
-          linkColor={() => 'rgba(255,255,255,0.2)'}
-          nodeRelSize={1}
-          linkWidth={link => link.val}
-          backgroundColor="transparent"
-          d3AlphaDecay={0.02}
-          d3VelocityDecay={0.3}
+        {dimensions.width > 0 && dimensions.height > 0 && (
+          <ForceGraph2D
+            ref={fgRef}
+            width={dimensions.width}
+            height={dimensions.height}
+            graphData={data}
+            nodeLabel="id"
+            nodeColor={node => node.group === 1 ? '#8B5CF6' : '#3B82F6'}
+            linkColor={() => 'rgba(255,255,255,0.2)'}
+            nodeRelSize={4}
+            linkWidth={link => link.val}
+            backgroundColor="transparent"
           onNodeClick={(node) => {
             setQuery(node.id);
             handleSearch({ preventDefault: () => {} });
@@ -117,6 +135,7 @@ const SimilarityGraph = () => {
             bckgDimensions && ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
           }}
         />
+        )}
         
         {loading && (
             <div className="absolute inset-0 bg-background/50 backdrop-blur-sm flex items-center justify-center">
