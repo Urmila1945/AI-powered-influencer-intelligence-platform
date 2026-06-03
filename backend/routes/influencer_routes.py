@@ -3,7 +3,8 @@ from services.youtube_service import youtube_service
 from services.instagram_service import instagram_service
 from models.influencer_model import InfluencerModel
 from utils.validators import validate_json
-
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from models.activity_model import ActivityModel
 influencer_bp = Blueprint('influencer', __name__)
 
 # API 1
