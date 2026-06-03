@@ -97,50 +97,16 @@ def get_leaderboard():
             InfluencerModel.create_influencer({"username": c, "platform": "YouTube"})
         all_influencers = InfluencerModel.get_all()
 
-    # Live refresh data for all creators in the DB to ensure REAL TIME metrics
+    # We just use the cached data in the DB for the leaderboard to prevent massive delays
     refreshed_influencers = []
     for inf in all_influencers:
-        username = inf.get("username", "").replace("@", "")
-        platform = inf.get("platform", "YouTube").lower()
-        
-        try:
-            if platform == 'youtube':
-                live_data = youtube_service.fetch_channel(username)
-            else:
-                live_data = instagram_service.fetch_profile(username)
-                
-            if live_data:
-                # Map live API data to DB schema
-                followers_num = int(str(live_data.get("followers", "0")).replace(',', ''))
-                eng_rate_num = float(str(live_data.get("engagementRate", "0%")).replace('%', ''))
-                scores = live_data.get("scores", {})
-                
-                mapped_data = {
-                    "username": live_data.get("username"),
-                    "platform": live_data.get("platform"),
-                    "category": live_data.get("category", "General"),
-                    "followers": followers_num,
-                    "engagement_rate": eng_rate_num,
-                    "authenticity_score": scores.get("authenticity", 0),
-                    "growth_score": scores.get("growth", 0),
-                    "viralmind_score": scores.get("viralmind_score", 0)
-                }
-                
-                # Update DB with fresh live data
-                InfluencerModel.db.influencers.update_one(
-                    {"_id": inf["_id"]},
-                    {"$set": mapped_data}
-                )
-                
-                mapped_data.pop('_id', None)
-                refreshed_influencers.append(mapped_data)
-        except Exception as e:
-            print(f"Failed to refresh {username}: {e}")
-            # Fallback to existing stale data if API fails
-            inf.pop('_id', None)
-            refreshed_influencers.append(inf)
+        inf.pop('_id', None)
+        # Ensure we have some default scores to sort by
+        if 'viralmind_score' not in inf:
+            inf['viralmind_score'] = inf.get('scores', {}).get('viralmind_score', 0)
+        refreshed_influencers.append(inf)
 
-    # Sort the refreshed creators by ViralMind score descending
+    # Sort the creators by ViralMind score descending
     refreshed_influencers.sort(key=lambda x: x.get('viralmind_score', 0), reverse=True)
     
     # Apply filters if provided in query params
