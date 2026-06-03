@@ -24,10 +24,20 @@ def get_youtube_influencer(channel_id):
         return jsonify({"error": str(e)}), 400
 
 # API 2
-@influencer_bp.route('/instagram/<username>', methods=['GET'])
-def get_instagram_influencer(username):
+@influencer_bp.route('/<platform>/<username>', methods=['GET'])
+@jwt_required()
+def get_influencer_analysis(platform, username):
     try:
-        data = instagram_service.fetch_profile(username)
+        current_user_email = get_jwt_identity()
+        ActivityModel.log_activity(None, current_user_email, "SEARCH", f"Analyzed {platform} influencer: {username}")
+        
+        if platform == 'instagram':
+            data = instagram_service.fetch_profile(username)
+        elif platform == 'youtube':
+            data = youtube_service.fetch_channel(username)
+        else:
+            return jsonify({"error": "Unsupported platform"}), 400
+
         if not data:
             return jsonify({"error": "User not found"}), 404
             

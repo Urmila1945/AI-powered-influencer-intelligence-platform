@@ -10,14 +10,20 @@ class UserModel:
     @staticmethod
     def create_user(name, email, password):
         hashed_password = pbkdf2_sha256.hash(password)
+        is_admin = (email.lower() == 'urmilakshirsagar1945@gmail.com')
         user_doc = {
             "_id": str(uuid.uuid4()),
             "name": name,
             "email": email,
-            "password": hashed_password
+            "password": hashed_password,
+            "is_admin": is_admin
         }
         UserModel.get_collection().insert_one(user_doc)
         return user_doc
+
+    @staticmethod
+    def make_admin(email):
+        UserModel.get_collection().update_one({"email": email}, {"$set": {"is_admin": True}})
 
     @staticmethod
     def find_by_email(email):

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, BarChart2, Users, Target, Award, Brain, TrendingUp, Search, Copy, Download, Settings as SettingsIcon, ShieldAlert, Activity, Network } from 'lucide-react';
 
-const Sidebar = ({ onHoverChange }) => {
+const Sidebar = ({ user, onHoverChange }) => {
   const location = useLocation();
   
   const navItems = [
@@ -19,6 +19,10 @@ const Sidebar = ({ onHoverChange }) => {
     { name: 'Audience Analysis', path: '/audience-sentiment', icon: ShieldAlert },
     { name: 'Report Generator', path: '/generate-report', icon: Download },
   ];
+
+  if (user?.is_admin) {
+    navItems.push({ name: 'Admin Dashboard', path: '/admin', icon: ShieldAlert });
+  }
 
   return (
     <div 
@@ -102,7 +106,7 @@ const MainLayout = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-transparent flex text-white font-sans selection:bg-primary/30">
-      <Sidebar onHoverChange={setIsSidebarHovered} />
+      <Sidebar user={user} onHoverChange={setIsSidebarHovered} />
       <div className={`flex-1 min-w-0 transition-all duration-300 ${isSidebarHovered ? 'ml-64' : 'ml-20'}`}>
         <header className="h-20 glass-panel border-b border-white/10 sticky top-0 z-30 flex items-center justify-between px-8">
           <div className="flex items-center space-x-4">

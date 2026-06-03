@@ -696,27 +696,6 @@ export const Settings = () => {
       <h1 className="text-3xl font-bold">System Settings</h1>
       
       <div className="glass-card">
-        <h3 className="text-xl font-semibold mb-6 flex items-center gap-2"><SettingsIcon className="text-primary" /> API Integrations Status</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {integrations.map(api => (
-            <div key={api.name} className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl">
-              <span className="font-medium">{api.name}</span>
-              <div className="flex items-center gap-2">
-                {api.status === 'Connected' ? (
-                  <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
-                ) : (
-                  <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                )}
-                <span className={`text-sm font-medium ${api.status === 'Connected' ? 'text-success' : 'text-red-500'}`}>
-                  {api.status}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      <div className="glass-card">
         <h3 className="text-xl font-semibold mb-6 flex items-center gap-2"><Brain className="text-primary" size={20}/> AI Engine Parameters</h3>
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors">

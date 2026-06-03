@@ -5,8 +5,10 @@ import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/Dashboard';
 import InfluencerAnalysis from './pages/InfluencerAnalysis';
 import AuthPage from './pages/AuthPage';
+import AdminDashboard from './pages/AdminDashboard';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
 import { 
   InfluencerReport, 
   BrandMatching, 
@@ -40,6 +42,7 @@ function App() {
             
             {/* Protected Routes */}
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
             <Route path="/analysis" element={<ProtectedRoute><InfluencerAnalysis /></ProtectedRoute>} />
             <Route path="/report/:id" element={<ProtectedRoute><InfluencerReport /></ProtectedRoute>} />
             <Route path="/brand-match" element={<ProtectedRoute><BrandMatching /></ProtectedRoute>} />
