@@ -13,13 +13,11 @@ class Config:
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "ratefluencer_jwt_secret_456")
 
     # MongoDB settings
-    # Hardcoded to bypass any bad Render environment variables
-    MONGODB_URI = "mongodb+srv://urmilakshirsagar1945_db_user:uMS5VIcci8yvW1qi@cluster0.eyljghf.mongodb.net/?appName=Cluster0"
+    MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://localhost:27017/")
     MONGODB_DB_NAME = os.getenv("MONGODB_DB_NAME", "ratefluencer_db")
 
     # API Keys
     YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "")
-    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dev-secret-key")
     APIFY_API_TOKEN = os.getenv("APIFY_TOKEN", os.getenv("APIFY_API_TOKEN", ""))
     RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY", "")
     GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
