@@ -66,7 +66,7 @@ def get_leaderboard():
                     "engagement_rate": eng_rate_num,
                     "authenticity_score": scores.get("authenticity", 0),
                     "growth_score": scores.get("growth", 0),
-                    "ratefluencer_score": scores.get("ratefluencer_score", 0)
+                    "viralmind_score": scores.get("viralmind_score", 0)
                 }
                 
                 # Update DB with fresh live data
@@ -83,8 +83,8 @@ def get_leaderboard():
             inf.pop('_id', None)
             refreshed_influencers.append(inf)
 
-    # Sort the refreshed creators by Ratefluencer score descending
-    refreshed_influencers.sort(key=lambda x: x.get('ratefluencer_score', 0), reverse=True)
+    # Sort the refreshed creators by ViralMind score descending
+    refreshed_influencers.sort(key=lambda x: x.get('viralmind_score', 0), reverse=True)
     
     # Apply filters if provided in query params
     req_platform = request.args.get('platform', 'all').lower()

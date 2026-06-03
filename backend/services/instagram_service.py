@@ -133,7 +133,7 @@ class ApifyInstagramService:
                 # Deterministic AQI
                 aqi = min(100, int((authenticity * 0.7) + (eng_rate * 2.5)))
                 
-                overall_score = score_calculator.calculate_ratefluencer_score(
+                overall_score = score_calculator.calculate_viralmind_score(
                     authenticity=authenticity,
                     engagement=eng_rate,
                     growth=growth,
@@ -174,7 +174,7 @@ class ApifyInstagramService:
                         "aqi": aqi,
                         "campaignSuccess": campaign,
                         "brandMatchScore": brand_match_score,
-                        "ratefluencer_score": overall_score
+                        "viralmind_score": overall_score
                     },
                     "brandMatches": brands[:3],
                     "demographics": demographics,

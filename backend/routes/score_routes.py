@@ -49,15 +49,15 @@ def predict_campaign():
     return jsonify({"success_probability": success_prob}), 200
 
 # API 8
-@score_bp.route('/ratefluencer-score', methods=['POST'])
+@score_bp.route('/viralmind-score', methods=['POST'])
 @validate_json("authenticity_score", "engagement", "growth_score", "audience_quality", "brand_relevance")
-def get_ratefluencer_score():
+def get_viralmind_score():
     data = request.get_json()
-    score = score_calculator.calculate_ratefluencer_score(
+    score = score_calculator.calculate_viralmind_score(
         data['authenticity_score'],
         data['engagement'],
         data['growth_score'],
         data['audience_quality'],
         data['brand_relevance']
     )
-    return jsonify({"ratefluencer_score": score}), 200
+    return jsonify({"viralmind_score": score}), 200

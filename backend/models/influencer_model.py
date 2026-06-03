@@ -11,7 +11,7 @@ class InfluencerModel:
         """
         data dictionary should contain:
         username, platform, followers, following, likes, comments,
-        engagement_rate, authenticity_score, growth_score, campaign_score, ratefluencer_score
+        engagement_rate, authenticity_score, growth_score, campaign_score, viralmind_score
         """
         influencer_doc = {
             "_id": str(uuid.uuid4()),
@@ -25,7 +25,7 @@ class InfluencerModel:
             "authenticity_score": data.get("authenticity_score", 0),
             "growth_score": data.get("growth_score", 0),
             "campaign_score": data.get("campaign_score", 0),
-            "ratefluencer_score": data.get("ratefluencer_score", 0)
+            "viralmind_score": data.get("viralmind_score", 0)
         }
         InfluencerModel.get_collection().insert_one(influencer_doc)
         return influencer_doc
@@ -47,4 +47,4 @@ class InfluencerModel:
 
     @staticmethod
     def get_top_influencers(limit=10):
-        return list(InfluencerModel.get_collection().find().sort("ratefluencer_score", -1).limit(limit))
+        return list(InfluencerModel.get_collection().find().sort("viralmind_score", -1).limit(limit))

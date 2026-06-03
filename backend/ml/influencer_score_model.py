@@ -25,7 +25,7 @@ class InfluencerScoreModel:
             [8.0, 5.0, 85, 80, 75],    # High tier
             [3.0, 1.0, 50, 50, 40]     # Below avg
         ])
-        # Target: Overall Ratefluencer Score (0-100)
+        # Target: Overall ViralMind Score (0-100)
         y = np.array([94, 75, 45, 82, 58])
         
         self.model.fit(X, y)
@@ -33,7 +33,7 @@ class InfluencerScoreModel:
 
     def calculate_score(self, features):
         """
-        Calculate the Ratefluencer score with a Machine Learning model.
+        Calculate the ViralMind score with a Machine Learning model.
         features: dict containing sub-scores (0-100) and percentages
         """
         if not self._trained:
@@ -48,7 +48,7 @@ class InfluencerScoreModel:
         
         X_input = np.array([[eng, growth, aqi, cons, comm_qual]])
         
-        # Predict the overall Ratefluencer Score
+        # Predict the overall ViralMind Score
         score = self.model.predict(X_input)[0]
         score = max(0, min(100, score))
         

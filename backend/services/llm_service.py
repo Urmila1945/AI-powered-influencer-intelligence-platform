@@ -172,7 +172,7 @@ class LLMService:
 
         system_prompt = {
             "role": "system",
-            "content": "You are the AI Influencer Advisor, a highly intelligent and professional assistant built into the Ratefluencer platform. You help brands and users understand creator analytics, engagement metrics, authenticity, and growth prediction. Be concise, insightful, and helpful."
+            "content": "You are the AI Influencer Advisor, a highly intelligent and professional assistant built into the ViralMind platform. You help brands and users understand creator analytics, engagement metrics, authenticity, and growth prediction. Be concise, insightful, and helpful."
         }
         
         # Prepare messages

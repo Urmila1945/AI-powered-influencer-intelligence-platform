@@ -13,14 +13,14 @@ class PDFReportGenerator:
         
         # Title
         pdf.set_font("Arial", 'B', 16)
-        pdf.cell(200, 10, txt="Ratefluencer AI Report", ln=True, align='C')
+        pdf.cell(200, 10, txt="ViralMind AI Report", ln=True, align='C')
         
         # Influencer Info
         pdf.set_font("Arial", 'B', 12)
         pdf.cell(200, 10, txt=f"Influencer: {data.get('username')}", ln=True)
         
         pdf.set_font("Arial", '', 11)
-        pdf.cell(200, 8, txt=f"Ratefluencer Score: {data.get('ratefluencer_score')}", ln=True)
+        pdf.cell(200, 8, txt=f"ViralMind Score: {data.get('viralmind_score')}", ln=True)
         pdf.cell(200, 8, txt=f"Followers: {data.get('followers')}", ln=True)
         pdf.cell(200, 8, txt=f"Engagement Rate: {data.get('engagement_rate')}%", ln=True)
         pdf.cell(200, 8, txt=f"Authenticity Score: {data.get('authenticity_score')}", ln=True)

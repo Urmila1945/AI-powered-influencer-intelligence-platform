@@ -18,8 +18,8 @@ def compare_influencers():
     
     return jsonify({
         "comparison": {
-            inf1: {"followers": 1200000, "engagement_rate": 5.2, "ratefluencer_score": 88},
-            inf2: {"followers": 900000, "engagement_rate": 8.1, "ratefluencer_score": 92}
+            inf1: {"followers": 1200000, "engagement_rate": 5.2, "viralmind_score": 88},
+            inf2: {"followers": 900000, "engagement_rate": 8.1, "viralmind_score": 92}
         },
         "winner_overall": inf2,
         "winner_engagement": inf2,

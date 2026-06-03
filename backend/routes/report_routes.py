@@ -17,7 +17,7 @@ def generate_report(username):
             "engagement_rate": 4.5,
             "authenticity_score": 90,
             "growth_score": 85,
-            "ratefluencer_score": 92,
+            "viralmind_score": 92,
             "ai_insights": "Strong tech creator with great engagement."
         }
         

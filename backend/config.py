@@ -6,16 +6,16 @@ load_dotenv()
 
 class Config:
     # Flask settings
-    SECRET_KEY = os.getenv("SECRET_KEY", "ratefluencer_super_secret_key_123")
+    SECRET_KEY = os.getenv("SECRET_KEY", "viralmind_super_secret_key_123")
     DEBUG = os.getenv("FLASK_DEBUG", "True").lower() in ("true", "1", "t")
 
     # JWT Authentication
-    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "ratefluencer_jwt_secret_456")
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "viralmind_jwt_secret_456")
 
     # MongoDB settings
     # Hardcoded to bypass any bad Render environment variables
     MONGODB_URI = "mongodb+srv://urmilakshirsagar1945_db_user:uMS5VIcci8yvW1qi@cluster0.eyljghf.mongodb.net/?appName=Cluster0"
-    MONGODB_DB_NAME = os.getenv("MONGODB_DB_NAME", "ratefluencer_db")
+    MONGODB_DB_NAME = os.getenv("MONGODB_DB_NAME", "viralmind_db")
 
     # API Keys
     YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY", "")

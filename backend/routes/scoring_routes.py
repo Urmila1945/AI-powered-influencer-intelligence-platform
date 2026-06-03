@@ -9,10 +9,10 @@ scoring_bp = Blueprint('scoring_bp', __name__)
 score_model = InfluencerScoreModel()
 ai_analyzer = GeminiAnalyzer()
 
-@scoring_bp.route('/ratefluencer-score', methods=['POST'])
-def get_ratefluencer_score():
+@scoring_bp.route('/viralmind-score', methods=['POST'])
+def get_viralmind_score():
     """
-    Endpoint to calculate the proprietary Ratefluencer score.
+    Endpoint to calculate the proprietary ViralMind score.
     """
     data = request.get_json()
     if not data or 'username' not in data:
@@ -32,7 +32,7 @@ def get_ratefluencer_score():
     score_result = score_model.calculate_score(features)
     
     response_data = {
-        "ratefluencer_score": score_result["score"],
+        "viralmind_score": score_result["score"],
         "explainable_ai_reasons": score_result["explanation"],
         "breakdown": features
     }

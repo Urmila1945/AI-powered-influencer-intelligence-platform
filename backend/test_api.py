@@ -1,7 +1,7 @@
 import unittest
 from app import create_app
 
-class RatefluencerApiTestCase(unittest.TestCase):
+class ViralMindApiTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
         self.app.testing = True
@@ -49,7 +49,7 @@ class RatefluencerApiTestCase(unittest.TestCase):
         response = self.client.post('/api/brand-match', json=payload)
         self.assertEqual(response.status_code, 200)
         
-    def test_ratefluencer_score(self):
+    def test_viralmind_score(self):
         payload = {
             "authenticity_score": 90,
             "engagement": 5.0,
@@ -57,9 +57,9 @@ class RatefluencerApiTestCase(unittest.TestCase):
             "audience_quality": 80,
             "brand_relevance": 90
         }
-        response = self.client.post('/api/ratefluencer-score', json=payload)
+        response = self.client.post('/api/viralmind-score', json=payload)
         self.assertEqual(response.status_code, 200)
-        self.assertIn('ratefluencer_score', response.get_json())
+        self.assertIn('viralmind_score', response.get_json())
         
 if __name__ == '__main__':
     unittest.main()

@@ -8,7 +8,7 @@ class AnalyticsModel:
         """
         return {
             "username": username,
-            "ratefluencer_score": metrics.get("ratefluencer_score", 0),
+            "viralmind_score": metrics.get("viralmind_score", 0),
             "authenticity_score": metrics.get("authenticity_score", 0),
             "growth_predictions": metrics.get("growth_predictions", {}),
             "timestamp": datetime.utcnow()

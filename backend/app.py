@@ -41,13 +41,13 @@ def create_app():
     @app.route('/', methods=['GET'])
     def index():
         return jsonify({
-            "message": "Welcome to the Ratefluencer API",
+            "message": "Welcome to the ViralMind API",
             "documentation": "Hit /health to check status, or use the /api/* endpoints."
         }), 200
 
     @app.route('/health', methods=['GET'])
     def health_check():
-        return jsonify({"status": "healthy", "service": "Ratefluencer API"}), 200
+        return jsonify({"status": "healthy", "service": "ViralMind API"}), 200
 
     @app.errorhandler(404)
     def not_found(error):

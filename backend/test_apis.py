@@ -7,7 +7,7 @@ endpoints = [
     {"method": "GET", "url": "/health", "payload": None},
     {"method": "POST", "url": "/api/influencer/analyze", "payload": {"platform": "youtube", "username": "techburner"}},
     {"method": "GET", "url": "/api/influencer/top-creators", "payload": None},
-    {"method": "POST", "url": "/api/scoring/ratefluencer-score", "payload": {"username": "techburner"}},
+    {"method": "POST", "url": "/api/scoring/viralmind-score", "payload": {"username": "techburner"}},
     {"method": "POST", "url": "/api/scoring/authenticity", "payload": {"username": "techburner"}},
     {"method": "POST", "url": "/api/scoring/insights", "payload": {"username": "techburner"}},
     {"method": "POST", "url": "/api/analytics/growth-prediction", "payload": {"username": "techburner"}},
