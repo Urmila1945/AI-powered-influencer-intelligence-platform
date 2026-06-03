@@ -77,7 +77,7 @@ const LandingPage = () => {
       
 
       {/* Features Section */}
-      <section id="features" className="py-24 px-4 relative z-10 bg-black/20 border-t border-white/5">
+      <section id="features" className="py-24 px-4 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Enterprise-Grade Intelligence</h2>
@@ -133,7 +133,7 @@ const LandingPage = () => {
         </div>
       </section>
       {/* Testimonials */}
-      <section className="py-24 px-4 relative z-10 bg-black/20 border-t border-white/5">
+      <section className="py-24 px-4 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Trusted by Industry Leaders</h2>
