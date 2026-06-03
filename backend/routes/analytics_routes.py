@@ -13,7 +13,17 @@ def ai_insights():
         
     inf_data = InfluencerModel.find_by_username(data['influencer_username'])
     if not inf_data:
-        inf_data = data # fallback to use provided data if not in DB
+        # Try to auto-fetch them from Instagram or YouTube to get their stats
+        from services.instagram_service import instagram_service
+        from services.youtube_service import youtube_service
+        username = data['influencer_username']
+        try:
+            inf_data = instagram_service.fetch_profile(username)
+        except:
+            try:
+                inf_data = youtube_service.fetch_channel(username)
+            except:
+                inf_data = data # fallback to use provided data if completely failed
     else:
         inf_data.pop('_id', None)
         
