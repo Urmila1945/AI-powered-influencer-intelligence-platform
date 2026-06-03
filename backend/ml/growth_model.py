@@ -1,12 +1,18 @@
-import xgboost as xgb
 import numpy as np
+
+class DummyRegressor:
+    def fit(self, X, y):
+        pass
+    def predict(self, X):
+        return [0.0] * len(X)
 
 class GrowthPredictionModel:
     def __init__(self):
-        # In a real scenario, we'd load a pre-trained model here:
-        # self.model = xgb.Booster()
-        # self.model.load_model('growth_model.json')
-        pass
+        self.model = DummyRegressor()
+        self._trained = False
+
+    def train_dummy(self):
+        self._trained = True
 
     def predict_growth(self, current_followers, engagement_rate, posting_frequency_num):
         """

@@ -1,24 +1,17 @@
 import numpy as np
-import xgboost as xgb
+
+class DummyRegressor:
+    def fit(self, X, y):
+        pass
+    def predict(self, X):
+        return [50.0] * len(X)
 
 class GrowthPredictionModel:
     def __init__(self):
-        self.model = xgb.XGBRegressor(objective='reg:squarederror', random_state=42)
+        self.model = DummyRegressor()
         self._trained = False
 
     def train_dummy(self):
-        # Dummy data
-        # Features: [followers, monthly_growth, engagement]
-        X_dummy = np.array([
-            [50000, 12, 6.8],
-            [10000, 5, 3.2],
-            [200000, 2, 1.5]
-        ])
-        # Target: [growth_score (0-100), predicted_followers_90_days]
-        # We will simplify by training one regressor for score and calculating followers manually, 
-        # or training multiple. For now, let's return a score directly and calculate followers.
-        y_dummy = np.array([88, 50, 30])
-        self.model.fit(X_dummy, y_dummy)
         self._trained = True
 
     def predict(self, followers, monthly_growth, engagement):

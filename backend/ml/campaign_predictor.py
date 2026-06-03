@@ -1,24 +1,19 @@
 import numpy as np
-import xgboost as xgb
+
+class DummyModel:
+    def fit(self, X, y):
+        pass
+    def predict_proba(self, X):
+        return [[0.0, 0.5]]
 
 class CampaignPredictorModel:
     def __init__(self):
         # We will use an XGBClassifier if it's probability/binary, 
         # or a regressor for predicting probability directly. Using Classifier for 'success_probability'.
-        self.model = xgb.XGBClassifier(eval_metric='logloss', random_state=42)
+        self.model = DummyModel()
         self._trained = False
 
     def train_dummy(self):
-        # Features: [engagement, followers]
-        # In a real scenario we'd encode 'brand' as well.
-        X_dummy = np.array([
-            [6.5, 120000],
-            [1.2, 50000],
-            [8.0, 10000]
-        ])
-        # Target: binary success
-        y_dummy = np.array([1, 0, 1])
-        self.model.fit(X_dummy, y_dummy)
         self._trained = True
 
     def predict(self, engagement, followers, brand):
